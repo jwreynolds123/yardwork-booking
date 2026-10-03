@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Request a Yardwork Day — Jacob</title>
+</head>
+<body style="margin:0;background:#f3f4f6;padding:12px;font-family:-apple-system,system-ui,sans-serif;color:#1c1c1e;">
+<div style="max-width:640px;margin:0 auto;">
+
+<div style="background:#ffffff;border-radius:12px;padding:16px;margin-bottom:12px;">
+<div style="font-size:20px;font-weight:800;">Request a yardwork day</div>
+<div style="font-size:14px;color:#4b5563;margin-top:4px;">Jacob &middot; Puna / HPP / Keaau area</div>
+<div style="font-size:13px;color:#4b5563;margin-top:8px;line-height:1.5;">Tap a <b style="color:#15803d;">green day</b>, fill out the short form, and it texts me your request. I do one job per day, mornings starting 8&ndash;9am.</div>
+<div style="font-size:13px;color:#4b5563;margin-top:6px;line-height:1.5;">$25/hr hand work &middot; $30/hr with my equipment &middot; $100 minimum per visit</div>
+</div>
+
+<div style="background:#ffffff;border-radius:12px;padding:16px;">
+<div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px;">
+<span style="font-size:17px;font-weight:700;">October 2026</span>
+<span style="font-size:12px;color:#6b7280;">HST</span>
+</div>
+<div style="display:flex;gap:12px;flex-wrap:wrap;font-size:11px;color:#6b7280;margin-bottom:8px;">
+<span><span style="display:inline-block;width:10px;height:10px;border-radius:3px;background:#16a34a;vertical-align:-1px;"></span> available &mdash; tap to request</span>
+<span><span style="display:inline-block;width:10px;height:10px;border-radius:3px;background:#e5e7eb;vertical-align:-1px;"></span> not available</span>
+</div>
+<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;font-size:11px;color:#6b7280;text-align:center;margin-bottom:4px;">
+<span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
+</div>
+<div id="grid" style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px;width:100%;"></div>
+</div>
+
+<div id="formWrap" style="display:none;background:#ffffff;border-radius:12px;padding:16px;margin-top:12px;">
+<div id="formTitle" style="font-size:17px;font-weight:800;margin-bottom:4px;"></div>
+<div style="font-size:13px;color:#6b7280;margin-bottom:12px;">Fill this out and it opens a text to me with everything ready to send.</div>
+<label style="display:block;font-size:14px;font-weight:700;margin-bottom:10px;">Your name
+<input id="fName" type="text" autocomplete="name" style="display:block;width:100%;box-sizing:border-box;margin-top:4px;font-size:16px;padding:10px;border:1px solid #d1d5db;border-radius:8px;">
+</label>
+<label style="display:block;font-size:14px;font-weight:700;margin-bottom:10px;">Your phone number
+<input id="fPhone" type="tel" autocomplete="tel" style="display:block;width:100%;box-sizing:border-box;margin-top:4px;font-size:16px;padding:10px;border:1px solid #d1d5db;border-radius:8px;">
+</label>
+<label style="display:block;font-size:14px;font-weight:700;margin-bottom:10px;">Job address
+<input id="fAddr" type="text" autocomplete="street-address" placeholder="Street address or area" style="display:block;width:100%;box-sizing:border-box;margin-top:4px;font-size:16px;padding:10px;border:1px solid #d1d5db;border-radius:8px;">
+</label>
+<label style="display:block;font-size:14px;font-weight:700;margin-bottom:10px;">What do you need done?
+<textarea id="fWork" rows="3" placeholder="e.g. weed whacking the back lot, trimming along the fence, general cleanup" style="display:block;width:100%;box-sizing:border-box;margin-top:4px;font-size:16px;padding:10px;border:1px solid #d1d5db;border-radius:8px;"></textarea>
+</label>
+<label style="display:block;font-size:14px;font-weight:700;margin-bottom:14px;">Preferred start time
+<select id="fTime" style="display:block;width:100%;box-sizing:border-box;margin-top:4px;font-size:16px;padding:10px;border:1px solid #d1d5db;border-radius:8px;background:#fff;">
+<option>8:00 AM</option>
+<option>8:30 AM</option>
+<option>9:00 AM</option>
+</select>
+</label>
+<button id="sendBtn" style="width:100%;font-size:17px;font-weight:800;padding:14px;border:none;border-radius:10px;background:#16a34a;color:#ffffff;cursor:pointer;">Text my request to Jacob</button>
+<div id="sentNote" style="display:none;margin-top:10px;font-size:14px;color:#15803d;font-weight:700;line-height:1.5;">Request ready — I'll text you back to confirm the day.</div>
+<div id="formErr" style="display:none;font-size:13px;color:#b91c1c;margin-top:8px;">Please fill in your name, phone, address, and what you need done.</div>
+<div id="fallback" style="display:none;margin-top:12px;border:1px solid #d1d5db;border-radius:8px;padding:10px;">
+<div style="font-size:13px;font-weight:700;margin-bottom:6px;">If the text app didn't open, copy this and send it to (808) 796-1566:</div>
+<div id="fallbackMsg" style="font-size:14px;background:#f9fafb;border-radius:6px;padding:10px;white-space:pre-wrap;margin-bottom:8px;"></div>
+<button id="copyBtn" style="font-size:15px;font-weight:700;padding:10px 16px;border:none;border-radius:8px;background:#1c1c1e;color:#ffffff;cursor:pointer;">Copy text</button>
+<span id="copyOk" style="display:none;font-size:13px;color:#15803d;margin-left:8px;">Copied.</span>
+</div>
+</div>
+
+<div style="font-size:13px;color:#4b5563;text-align:center;margin-top:12px;line-height:1.6;">
+Don't see a day that works? Text me directly: <a href="tel:+18087961566" style="color:#1c1c1e;font-weight:700;">(808) 796-1566</a>
+</div>
+
+</div>
+<script>
+(function(){
+var JACOB_SMS = "+18087961566";
+// Availability for October 2026. booked = client job, no-car, or offered day.
+// Only days in AVAILABLE are tappable. Everything else renders not-available.
+var BOOKED = {3:1,4:1,6:1,7:1,8:1,10:1,11:1,13:1};
+var UNAVAIL = {5:1,18:1}; // 5th: no car day. 18th: already offered to another lead.
+var AVAILABLE = {17:1};
+var TODAY = 3;
+
+var grid = document.getElementById("grid");
+var formWrap = document.getElementById("formWrap");
+var formTitle = document.getElementById("formTitle");
+var selectedDay = null;
+
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+function dayName(d){
+  var dt = new Date(2026, 9, d);
+  return dt.toLocaleDateString("en-US",{weekday:"long", month:"long", day:"numeric"});
+}
+function stateFor(d){
+  if(d < TODAY) return "past";
+  if(BOOKED[d]) return "booked";
+  if(AVAILABLE[d]) return "available";
+  return "unavail";
+}
+// 35 cells starting Sunday Sep 27, 2026
+var start = new Date(2026, 8, 27);
+for(var i=0;i<35;i++){
+  (function(){
+    var dt = new Date(start.getTime() + i*86400000);
+    var isOct = dt.getMonth() === 9;
+    var d = dt.getDate();
+    var cell = document.createElement("div");
+    var s = "min-height:56px;padding:6px 3px;border-radius:8px;font-size:13px;overflow:hidden;box-sizing:border-box;";
+    var st = isOct ? stateFor(d) : "other";
+    if(st === "other" || st === "past"){ s += "color:#9ca3af;background:#f9fafb;"; }
+    else if(st === "available"){ s += "background:#16a34a;color:#ffffff;font-weight:800;cursor:pointer;"; }
+    else { s += "background:#e5e7eb;color:#6b7280;"; }
+    if(isOct && d === TODAY){ s += "outline:2px solid #1c1c1e;"; }
+    cell.setAttribute("style", s);
+    var html = "<span>"+d+"</span>";
+    if(isOct && st === "available"){ html += '<div style="margin-top:4px;font-size:9px;font-weight:700;">OPEN</div>'; }
+    if(isOct && st === "booked"){ html += '<div style="margin-top:4px;font-size:9px;font-weight:700;">BOOKED</div>'; }
+    if(isOct && d === TODAY){ html += '<div style="margin-top:2px;font-size:9px;">Today</div>'; }
+    cell.innerHTML = html;
+    if(st === "available"){
+      cell.setAttribute("role","button");
+      cell.setAttribute("tabindex","0");
+      var pick = function(){ selectDay(d); };
+      cell.addEventListener("click", pick);
+      cell.addEventListener("keydown", function(ev){ if(ev.key==="Enter"||ev.key===" "){ ev.preventDefault(); pick(); } });
+    }
+    grid.appendChild(cell);
+  })();
+}
+function selectDay(d){
+  if(selectedDay === d){ selectedDay = null; formWrap.style.display = "none"; paintSel(); return; }
+  selectedDay = d;
+  formTitle.textContent = "Request " + dayName(d);
+  document.getElementById("formErr").style.display = "none";
+  document.getElementById("fallback").style.display = "none";
+  formWrap.style.display = "block";
+  paintSel();
+  formWrap.scrollIntoView({behavior:"smooth", block:"start"});
+}
+function paintSel(){
+  var cells = grid.children;
+  for(var j=0;j<cells.length;j++){
+    var dt = new Date(start.getTime() + j*86400000);
+    if(dt.getMonth()===9 && dt.getDate()===selectedDay && stateFor(dt.getDate())==="available"){
+      cells[j].style.outline = "3px solid #1c1c1e";
+    } else if(!(dt.getMonth()===9 && dt.getDate()===TODAY)){
+      cells[j].style.outline = "none";
+    }
+  }
+}
+document.getElementById("sendBtn").addEventListener("click", function(){
+  var name = document.getElementById("fName").value.trim();
+  var phone = document.getElementById("fPhone").value.trim();
+  var addr = document.getElementById("fAddr").value.trim();
+  var work = document.getElementById("fWork").value.trim();
+  var time = document.getElementById("fTime").value;
+  var err = document.getElementById("formErr");
+  if(!name || !phone || !addr || !work){ err.style.display = "block"; return; }
+  err.style.display = "none";
+  var msg = "Hi Jacob, this is " + name + " (" + phone + "). I'd like to request " + dayName(selectedDay) + " around " + time + " for: " + work + ". Address: " + addr;
+  document.getElementById("fallbackMsg").textContent = msg;
+  document.getElementById("fallback").style.display = "block";
+  document.getElementById("sentNote").style.display = "block";
+  document.getElementById("copyOk").style.display = "none";
+  window.location.href = "sms:" + JACOB_SMS + "?body=" + encodeURIComponent(msg);
+});
+document.getElementById("copyBtn").addEventListener("click", function(){
+  var msg = document.getElementById("fallbackMsg").textContent;
+  var ok = document.getElementById("copyOk");
+  function done(){ ok.style.display = "inline"; }
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(msg).then(done, function(){ fallbackCopy(msg); done(); });
+  } else { fallbackCopy(msg); done(); }
+});
+function fallbackCopy(text){
+  var ta = document.createElement("textarea");
+  ta.value = text;
+  ta.style.position = "fixed"; ta.style.opacity = "0";
+  document.body.appendChild(ta);
+  ta.select();
+  try{ document.execCommand("copy"); }catch(e){}
+  document.body.removeChild(ta);
+}
+})();
+</script>
+</body>
+</html>
