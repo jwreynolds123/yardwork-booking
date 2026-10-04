@@ -16,14 +16,15 @@
   .wrap { max-width: 640px; margin: 0 auto; }
   .hero {
     background: linear-gradient(135deg, #14532d 0%, #1e7a3c 55%, #2ea44f 100%);
-    border-radius: 20px; padding: 22px 20px; color: #fff;
+    border-radius: 20px; padding: 18px; color: #fff;
     box-shadow: 0 8px 24px rgba(20, 83, 45, .28);
-    margin-bottom: 14px; position: relative; overflow: hidden;
+    margin-bottom: 14px;
   }
-  .hero::after {
-    content: "🌿"; position: absolute; right: 14px; top: 10px;
-    font-size: 64px; opacity: .18; transform: rotate(-12deg);
+  .hero-img {
+    width: 100%; height: 250px; object-fit: cover; object-position: center 30%;
+    border-radius: 14px; display: block; margin-bottom: 8px;
   }
+  .hero-cap { font-size: 12px; opacity: .85; margin: 0 0 12px; }
   .hero h1 { margin: 0 0 2px; font-size: 24px; font-weight: 800; letter-spacing: -.3px; }
   .hero .area { font-size: 14px; opacity: .92; margin-bottom: 10px; }
   .hero p { margin: 8px 0 0; font-size: 14px; line-height: 1.55; opacity: .96; }
@@ -87,6 +88,8 @@
 <div class="wrap">
 
 <div class="hero">
+  <img class="hero-img" src="yardwork-hero.jpg" alt="AI illustration of Jacob juggling every yardwork tool at once">
+  <div class="hero-cap">(Yes, it&rsquo;s AI &mdash; the real me has two arms.)</div>
   <h1>Request a yardwork day</h1>
   <div class="area">Jacob &middot; Puna, HPP, Keaau &amp; nearby</div>
   <p>I do yardwork around Puna &mdash; weeding, weed whacking, trimming, and cleanup. One job a day, mornings starting 8&ndash;9am.</p>
