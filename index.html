@@ -158,8 +158,8 @@ var JACOB_SMS = "+18087961566";
 // Availability for October 2026. booked = client job, no-car, or offered day.
 // Only days in AVAILABLE are tappable. Everything else renders not-available.
 var BOOKED = {3:1,4:1,6:1,7:1,8:1,10:1,11:1,13:1};
-var UNAVAIL = {5:1,18:1}; // 5th: no car day. 18th: already offered to another lead.
-var AVAILABLE = {17:1, 20:1, 22:1, 24:1, 25:1, 27:1, 31:1};
+var UNAVAIL = {5:1}; // 5th: no car day. 18th: Garimo hold dropped Oct 4 — returned to available.
+var AVAILABLE = {17:1, 18:1, 20:1, 22:1, 24:1, 25:1, 27:1, 31:1};
 var _now = new Date();
 var TODAY = (_now.getFullYear()===2026 && _now.getMonth()===9) ? _now.getDate() : 0;
 
