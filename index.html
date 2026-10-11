@@ -124,6 +124,18 @@
   <div class="cta-line">Tap a <b>green day</b>, fill out the short form, and it texts me your request.</div>
 </div>
 
+<div class="card">
+  <div class="cal-head"><h2>November 2026</h2><span>HST</span></div>
+  <div class="legend">
+    <span><span class="pill" style="background:#22c55e;"></span>open &mdash; tap to request</span>
+    <span><span class="pill" style="background:#9ca3af;"></span>booked</span>
+    <span><span class="pill" style="background:#e5e7eb;"></span>unavailable</span>
+  </div>
+  <div class="dow"><span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span></div>
+  <div id="gridNov"></div>
+  <div class="cta-line">Tap a <b>green day</b>, fill out the short form, and it texts me your request.</div>
+</div>
+
 <div id="formWrap" class="card" style="display:none;">
   <div id="formTitle"></div>
   <div class="form-sub">Fill this out and it opens a text to me with everything ready to send.</div>
@@ -157,7 +169,7 @@
 </div>
 
 <div class="foot">
-  Don't see a day that works, need November, or outside the area?<br>Text me: <a href="tel:+18087961566">(808) 796-1566</a>
+  Don't see a day that works, need December, or outside the area?<br>Text me: <a href="tel:+18087961566">(808) 796-1566</a>
 </div>
 
 </div>
@@ -166,64 +178,80 @@
 var JACOB_SMS = "+18087961566";
 // Availability for October 2026. booked = client job, no-car, or offered day.
 // Only days in AVAILABLE are tappable. Everything else renders not-available.
-var BOOKED = {3:1,4:1,6:1,7:1,9:1,10:1,11:1,13:1,17:1,18:1,20:1,22:1}; // 11+13: Janet. 17: Kate Asis Teske. 18: Walt. 20+22: Laura D Explora (confirmed Oct 10).
-var UNAVAIL = {5:1,24:1,25:1,27:1,31:1}; // 5th: no car day. 24/27/31: offered to Susan + Lucas Oct 10, awaiting replies. 25th: Karen requested, awaiting her confirmation.
-var AVAILABLE = {12:1,14:1,15:1,16:1,19:1,21:1,23:1,26:1,28:1,29:1,30:1}; // hold lifted Oct 10 evening — Jacob resumed scheduling.
+var OCT = {
+  BOOKED: {3:1,4:1,6:1,7:1,9:1,10:1,11:1,13:1,17:1,18:1,20:1,22:1}, // 11+13: Janet. 17: Kate Asis Teske. 18: Walt. 20+22: Laura D Explora (confirmed Oct 10).
+  UNAVAIL: {5:1,12:1,14:1,15:1,16:1,19:1,21:1,23:1,24:1,25:1,26:1,27:1,28:1,29:1,30:1,31:1}, // 5th: no car day. 24/27/31: offered to Susan + Lucas Oct 10, awaiting replies. 25th: Karen requested, awaiting her confirmation. Rest: closed Oct 10 — weekends-open policy from here on out.
+  AVAILABLE: {}
+};
+var NOV = {
+  BOOKED: {},
+  UNAVAIL: {},
+  AVAILABLE: {1:1,7:1,8:1,14:1,15:1,21:1,22:1,28:1,29:1} // weekends-open policy from Oct 10 — Claire + Jacob ride-sharing
+};
 var _now = new Date();
-var TODAY = (_now.getFullYear()===2026 && _now.getMonth()===9) ? _now.getDate() : 0;
+var TODAY_OCT = (_now.getFullYear()===2026 && _now.getMonth()===9) ? _now.getDate() : 0;
 
-var grid = document.getElementById("grid");
 var formWrap = document.getElementById("formWrap");
 var formTitle = document.getElementById("formTitle");
-var selectedDay = null;
+var selected = null; // {d: day-of-month, m: 0-indexed month}
 
 function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
-function dayName(d){
-  var dt = new Date(2026, 9, d);
+function dayName(d, m){
+  var dt = new Date(2026, m, d);
   return dt.toLocaleDateString("en-US",{weekday:"long", month:"long", day:"numeric"});
 }
-function stateFor(d){
-  if(d < TODAY) return "past";
-  if(BOOKED[d]) return "booked";
-  if(AVAILABLE[d]) return "available";
+function stateFor(d, maps, today){
+  if(today && d < today) return "past";
+  if(maps.BOOKED[d]) return "booked";
+  if(maps.AVAILABLE[d]) return "available";
   return "unavail";
 }
-// 35 cells starting Sunday Sep 27, 2026
-var start = new Date(2026, 8, 27);
-for(var i=0;i<35;i++){
-  (function(){
-    var dt = new Date(start.getTime() + i*86400000);
-    var isOct = dt.getMonth() === 9;
-    var d = dt.getDate();
-    var cell = document.createElement("div");
-    var s = "min-height:58px;padding:6px 3px;border-radius:10px;font-size:13px;overflow:hidden;box-sizing:border-box;text-align:center;";
-    var st = isOct ? stateFor(d) : "other";
-    if(st === "other" || st === "past"){ s += "color:#9ca3af;background:#f3f6f3;"; }
-    else if(st === "available"){ s += "background:linear-gradient(135deg,#16a34a,#22c55e);color:#ffffff;font-weight:800;cursor:pointer;box-shadow:0 3px 8px rgba(22,163,74,.30);"; }
-    else if(st === "booked"){ s += "background:#d7dce1;color:#4b5563;"; }
-    else { s += "background:#edf1ed;color:#9aa39a;"; }
-    if(isOct && d === TODAY){ s += "outline:2px solid #14532d;"; }
-    cell.setAttribute("style", s);
-    var html = "<span>"+d+"</span>";
-    if(isOct && st === "available"){ html += '<div style="margin-top:4px;font-size:9px;font-weight:800;letter-spacing:.4px;">OPEN</div>'; }
-    if(isOct && st === "booked"){ html += '<div style="margin-top:4px;font-size:9px;font-weight:700;">BOOKED</div>'; }
-    if(isOct && st === "unavail"){ html += '<div style="margin-top:4px;font-size:9px;font-weight:700;">UNAVAILABLE</div>'; }
-    if(isOct && d === TODAY){ html += '<div style="margin-top:2px;font-size:9px;">Today</div>'; }
-    cell.innerHTML = html;
-    if(st === "available"){
-      cell.setAttribute("role","button");
-      cell.setAttribute("tabindex","0");
-      var pick = function(){ selectDay(d); };
-      cell.addEventListener("click", pick);
-      cell.addEventListener("keydown", function(ev){ if(ev.key==="Enter"||ev.key===" "){ ev.preventDefault(); pick(); } });
-    }
-    grid.appendChild(cell);
-  })();
+function buildMonth(gridId, m, maps, today){
+  var grid = document.getElementById(gridId);
+  var first = new Date(2026, m, 1);
+  var start = new Date(2026, m, 1 - first.getDay());
+  var cells = [];
+  for(var i=0;i<35;i++){
+    (function(){
+      var dt = new Date(start.getTime() + i*86400000);
+      var inMonth = dt.getMonth() === m;
+      var d = dt.getDate();
+      var cell = document.createElement("div");
+      var s = "min-height:58px;padding:6px 3px;border-radius:10px;font-size:13px;overflow:hidden;box-sizing:border-box;text-align:center;";
+      var st = inMonth ? stateFor(d, maps, today) : "other";
+      if(st === "other" || st === "past"){ s += "color:#9ca3af;background:#f3f6f3;"; }
+      else if(st === "available"){ s += "background:linear-gradient(135deg,#16a34a,#22c55e);color:#ffffff;font-weight:800;cursor:pointer;box-shadow:0 3px 8px rgba(22,163,74,.30);"; }
+      else if(st === "booked"){ s += "background:#d7dce1;color:#4b5563;"; }
+      else { s += "background:#edf1ed;color:#9aa39a;"; }
+      if(inMonth && today && d === today){ s += "outline:2px solid #14532d;"; }
+      cell.setAttribute("style", s);
+      cell.setAttribute("data-d", d);
+      cell.setAttribute("data-m", m);
+      var html = "<span>"+d+"</span>";
+      if(inMonth && st === "available"){ html += '<div style="margin-top:4px;font-size:9px;font-weight:800;letter-spacing:.4px;">OPEN</div>'; }
+      if(inMonth && st === "booked"){ html += '<div style="margin-top:4px;font-size:9px;font-weight:700;">BOOKED</div>'; }
+      if(inMonth && st === "unavail"){ html += '<div style="margin-top:4px;font-size:9px;font-weight:700;">UNAVAILABLE</div>'; }
+      if(inMonth && today && d === today){ html += '<div style="margin-top:2px;font-size:9px;">Today</div>'; }
+      cell.innerHTML = html;
+      if(st === "available"){
+        cell.setAttribute("role","button");
+        cell.setAttribute("tabindex","0");
+        var pick = function(){ selectDay(d, m); };
+        cell.addEventListener("click", pick);
+        cell.addEventListener("keydown", function(ev){ if(ev.key==="Enter"||ev.key===" "){ ev.preventDefault(); pick(); } });
+      }
+      grid.appendChild(cell);
+      cells.push(cell);
+    })();
+  }
+  return cells;
 }
-function selectDay(d){
-  if(selectedDay === d){ selectedDay = null; formWrap.style.display = "none"; paintSel(); return; }
-  selectedDay = d;
-  formTitle.textContent = "Request " + dayName(d);
+var octCells = buildMonth("grid", 9, OCT, TODAY_OCT);
+var novCells = buildMonth("gridNov", 10, NOV, 0);
+function selectDay(d, m){
+  if(selected && selected.d === d && selected.m === m){ selected = null; formWrap.style.display = "none"; paintSel(); return; }
+  selected = {d:d, m:m};
+  formTitle.textContent = "Request " + dayName(d, m);
   document.getElementById("formErr").style.display = "none";
   document.getElementById("fallback").style.display = "none";
   formWrap.style.display = "block";
@@ -231,13 +259,16 @@ function selectDay(d){
   formWrap.scrollIntoView({behavior:"smooth", block:"start"});
 }
 function paintSel(){
-  var cells = grid.children;
-  for(var j=0;j<cells.length;j++){
-    var dt = new Date(start.getTime() + j*86400000);
-    if(dt.getMonth()===9 && dt.getDate()===selectedDay && stateFor(dt.getDate())==="available"){
-      cells[j].style.outline = "3px solid #14532d";
-    } else if(!(dt.getMonth()===9 && dt.getDate()===TODAY)){
-      cells[j].style.outline = "none";
+  var all = octCells.concat(novCells);
+  for(var j=0;j<all.length;j++){
+    var c = all[j];
+    var cd = parseInt(c.getAttribute("data-d"), 10);
+    var cm = parseInt(c.getAttribute("data-m"), 10);
+    var isToday = (cm === 9 && TODAY_OCT && cd === TODAY_OCT);
+    if(selected && cd === selected.d && cm === selected.m){
+      c.style.outline = "3px solid #14532d";
+    } else if(!isToday){
+      c.style.outline = "none";
     }
   }
 }
@@ -250,7 +281,7 @@ document.getElementById("sendBtn").addEventListener("click", function(){
   var err = document.getElementById("formErr");
   if(!name || !phone || !addr || !work){ err.style.display = "block"; return; }
   err.style.display = "none";
-  var msg = "Hi Jacob, this is " + name + " (" + phone + "). I'd like to request " + dayName(selectedDay) + " around " + time + " for: " + work + ". Address: " + addr;
+  var msg = "Hi Jacob, this is " + name + " (" + phone + "). I'd like to request " + dayName(selected.d, selected.m) + " around " + time + " for: " + work + ". Address: " + addr;
   document.getElementById("fallbackMsg").textContent = msg;
   document.getElementById("fallback").style.display = "block";
   document.getElementById("sentNote").style.display = "block";
