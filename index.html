@@ -181,14 +181,14 @@ var JACOB_SMS = "+18087961566";
 // Only days in AVAILABLE are tappable. Everything else renders not-available.
 // Public display: booked days render as UNAVAILABLE (Oct 19, 2026 — Jacob doesn't want the page confirming he has clients). Internal maps keep the real states.
 var OCT = {
-  BOOKED: {3:1,4:1,6:1,7:1,9:1,10:1,11:1,13:1,17:1,18:1,20:1,22:1,24:1,25:1}, // 11+13: Janet. 17: Kate Asis Teske. 18: Walt. 20+22: Laura D Explora (confirmed Oct 10). 24: Susan Hendricks (confirmed by text Oct 12, rates stated). 25: Karen Furtado (confirmed by text Oct 12).
-  UNAVAIL: {5:1,12:1,14:1,15:1,16:1,19:1,21:1,23:1,26:1,27:1,28:1,29:1,30:1,31:1}, // 5th: no car day. 12th: Jacob staying home. 27th: quietly open in HIS books only (his call Oct 16; not advertised, stays off this page). 31st: closed for Halloween (his call Oct 16). Rest: closed Oct 11 — Jacob home with Bella.
+  BOOKED: {3:1,4:1,6:1,7:1,9:1,10:1,11:1,13:1,17:1,18:1,20:1,24:1,25:1,27:1}, // 11+13: Janet. 17: Kate Asis Teske. 18: Walt. 20: Laura D Explora day one (done). 22: Laura day two — CANCELED Oct 21 (dental), removed from BOOKED. 27: Laura reschedule BOOKED (confirmed by text Oct 23). 24: Susan Hendricks (confirmed by text Oct 12, rates stated). 25: Karen Furtado (confirmed by text Oct 12).
+  UNAVAIL: {5:1,12:1,14:1,15:1,16:1,19:1,21:1,22:1,23:1,26:1,28:1,29:1,30:1,31:1}, // 5th: no car day. 12th: Jacob staying home. 22nd: Laura day two canceled Oct 21 (dental). 31st: closed for Halloween (his call Oct 16). Rest: closed Oct 11 — Jacob home with Bella.
   AVAILABLE: {} // October fully closed Oct 11 — Jacob home with Bella; November unchanged
 };
 var NOV = {
-  BOOKED: {2:1,3:1}, // 2: Cherise Collins — weed whacking 9am, 16-2163 Ainaloa Dr Pahoa (approved by text Oct 12; text-only, she can't speak). 3: Steve & Katia — weeding and moving rocks 8am, 15-2041 8th Ave HPP (they picked Nov 3 by text Oct 19; Royelen referral)
-  UNAVAIL: {1:1,7:1,8:1,14:1,15:1,21:1,22:1,26:1,28:1,29:1}, // weekends off from Nov — Claire's call Oct 10. 26th: Thanksgiving, closed Oct 11.
-  AVAILABLE: {4:1,5:1,6:1,9:1,10:1,11:1,12:1,13:1,16:1,17:1,18:1,19:1,20:1,23:1,24:1,25:1,27:1,30:1} // November weekdays open (3 moved to BOOKED Oct 19)
+  BOOKED: {2:1,3:1,4:1}, // 2: Cherise Collins — weed whacking 9am, 16-2163 Ainaloa Dr Pahoa (approved by text Oct 12; text-only, she can't speak). 3: Steve & Katia — weeding and moving rocks 8am, 15-2041 8th Ave HPP (they picked Nov 3 by text Oct 19; Royelen referral). 4: Glen — weed pulling + yard clean up 8am, 18-1252 Volcano Rd, Mountain View (Nicole passed Oct 24; Jacob's confirmation text to Glen sent Oct 24 ~2:37pm; Glen's reply pending)
+  UNAVAIL: {1:1,7:1,8:1,14:1,15:1,21:1,22:1,26:1,28:1,29:1}, // weekends off from Nov — Claire's call Oct 10. 26th: Thanksgiving, closed Oct 11. 4: was offered to Nicole Golzer (Oct 17) — she PASSED Oct 24, day went to Glen (BOOKED). 5+6: offered to Laura Oct 22, RELEASED Oct 23 when she booked Tue Oct 27 instead — back in AVAILABLE.
+  AVAILABLE: {5:1,6:1,9:1,10:1,11:1,12:1,13:1,16:1,17:1,18:1,19:1,20:1,23:1,24:1,25:1,27:1,30:1} // November weekdays open (4 moved to UNAVAIL Oct 22 — offered to Nicole; 5+6 back Oct 23 after Laura picked Oct 27; 3 moved to BOOKED Oct 19)
 };
 var _now = new Date();
 var TODAY_OCT = (_now.getFullYear()===2026 && _now.getMonth()===9) ? _now.getDate() : 0;
