@@ -91,8 +91,6 @@
   #copyOk { display: none; font-size: 13px; color: #15803d; margin-left: 8px; font-weight: 700; }
   .foot { font-size: 13px; color: #4b5563; text-align: center; margin: 6px 0 10px; line-height: 1.6; }
   .foot a { color: #14532d; font-weight: 800; text-decoration: none; }
-.pfall { position: fixed; top: -60px; z-index: 50; pointer-events: none; animation-name: pdrop; animation-timing-function: linear; animation-iteration-count: infinite; }
-@keyframes pdrop { to { transform: translateY(115vh) rotate(300deg); } }
 </style>
 </head>
 <body>
@@ -107,9 +105,6 @@
   <div class="rates">$30/hr hand work &middot; $35/hr with my weed wacker &middot; $120 minimum</div>
   <div class="rates-ex">e.g. 4 hrs of hand work = $120</div>
 </div>
-
-
-<div style="background:#7c2d12;border-radius:14px;padding:10px 14px;margin-bottom:14px;color:#ffedd5;font-size:14px;text-align:center;line-height:1.5;">&#127875; <b>Happy Halloween!</b> I&rsquo;m off with the family on Saturday the 31st. Back at it Monday, November 2.</div>
 
 <div class="card">
   <div class="svc">
@@ -288,22 +283,6 @@ function fallbackCopy(text){
   try{ document.execCommand("copy"); }catch(e){}
   document.body.removeChild(ta);
 }
-})();
-</script>
-<script>
-(function(){
-  var emojis = ["\u{1F383}","\u{1F383}","\u{1F383}","\u{1F47B}","\u{1F987}"];
-  for(var i=0;i<14;i++){
-    var s=document.createElement("span");
-    s.className="pfall";
-    s.textContent=emojis[i % emojis.length];
-    s.style.left=(Math.random()*96)+"vw";
-    s.style.fontSize=(16+Math.random()*22)+"px";
-    s.style.opacity=(0.5+Math.random()*0.5);
-    s.style.animationDuration=(7+Math.random()*8)+"s";
-    s.style.animationDelay=(-Math.random()*12)+"s";
-    document.body.appendChild(s);
-  }
 })();
 </script>
 </body>
