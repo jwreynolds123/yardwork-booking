@@ -75,20 +75,20 @@
     outline: none; border-color: #22c55e; background: #fff;
     box-shadow: 0 0 0 3px rgba(34,197,94,.15);
   }
-  #sendBtn {
+  #sendBtn, #tSendBtn {
     width: 100%; font-size: 17px; font-weight: 800; padding: 15px; border: none; border-radius: 14px;
     background: linear-gradient(135deg, #16a34a, #22c55e); color: #fff; cursor: pointer;
     box-shadow: 0 6px 16px rgba(22,163,74,.35);
   }
-  #sendBtn:active { transform: scale(.99); }
+  #sendBtn:active, #tSendBtn:active { transform: scale(.99); }
   #formTitle { font-size: 19px; font-weight: 800; margin: 0 0 4px; }
   .form-sub { font-size: 13px; color: #6b7280; margin-bottom: 14px; }
-  #sentNote { display: none; margin-top: 12px; font-size: 14px; color: #15803d; font-weight: 700; line-height: 1.5; }
-  #formErr { display: none; font-size: 13px; color: #b91c1c; margin-top: 8px; font-weight: 600; }
-  #fallback { display: none; margin-top: 14px; border: 1.5px dashed #b7c9b7; border-radius: 12px; padding: 12px; background: #f7fbf7; }
-  #fallbackMsg { font-size: 14px; background: #fff; border-radius: 8px; padding: 10px; white-space: pre-wrap; margin-bottom: 10px; border: 1px solid #e5e7eb; }
-  #copyBtn { font-size: 15px; font-weight: 700; padding: 10px 18px; border: none; border-radius: 10px; background: #1c2b21; color: #fff; cursor: pointer; }
-  #copyOk { display: none; font-size: 13px; color: #15803d; margin-left: 8px; font-weight: 700; }
+  #sentNote, #tSentNote { display: none; margin-top: 12px; font-size: 14px; color: #15803d; font-weight: 700; line-height: 1.5; }
+  #formErr, #tErr { display: none; font-size: 13px; color: #b91c1c; margin-top: 8px; font-weight: 600; }
+  #fallback, #tFallback { display: none; margin-top: 14px; border: 1.5px dashed #b7c9b7; border-radius: 12px; padding: 12px; background: #f7fbf7; }
+  #fallbackMsg, #tFallbackMsg { font-size: 14px; background: #fff; border-radius: 8px; padding: 10px; white-space: pre-wrap; margin-bottom: 10px; border: 1px solid #e5e7eb; }
+  #copyBtn, #tCopyBtn { font-size: 15px; font-weight: 700; padding: 10px 18px; border: none; border-radius: 10px; background: #1c2b21; color: #fff; cursor: pointer; }
+  #copyOk, #tCopyOk { display: none; font-size: 13px; color: #15803d; margin-left: 8px; font-weight: 700; }
   .foot { font-size: 13px; color: #4b5563; text-align: center; margin: 6px 0 10px; line-height: 1.6; }
   .foot a { color: #14532d; font-weight: 800; text-decoration: none; }
 </style>
@@ -170,6 +170,31 @@
   <p style="font-weight:800;margin:12px 0 0;font-size:15px;">&mdash; Royelen <span style="font-weight:400;color:#4b5563;font-size:13px;">&middot; one of my regulars</span></p>
   <div style="border-top:1px solid #e5e7eb;margin:14px 0 10px;"></div>
   <p style="margin:0;font-size:13px;color:#4b5563;line-height:1.55;">Want to talk to a reference before you book? A couple of my regular clients said they&rsquo;re happy to chat &mdash; just mention it in your request and I&rsquo;ll connect you.</p>
+</div>
+
+<div class="card">
+  <h2 style="margin:0 0 8px;font-size:19px;">Had me out before?</h2>
+  <p style="margin:0 0 14px;font-size:14px;color:#4b5563;line-height:1.55;">Leave a few words about how it went. It texts me what you wrote &mdash; nothing shows up on this page unless I read it first and put it there.</p>
+  <label class="f">Your first name
+    <input id="tName" type="text" autocomplete="name">
+  </label>
+  <label class="f">Your phone number
+    <input id="tPhone" type="tel" autocomplete="tel">
+  </label>
+  <label class="f">What did I do for you?
+    <input id="tJob" type="text" placeholder="e.g. weed whacking and cleanup at my place in HPP">
+  </label>
+  <label class="f">Your words
+    <textarea id="tWords" rows="4" placeholder="How did it go?"></textarea>
+  </label>
+  <button id="tSendBtn">Text it to Jacob</button>
+  <div id="tSentNote">Ready &mdash; thanks for the kind words.</div>
+  <div id="tErr">Please add your first name, your real phone number, what I did for you, and a few words &mdash; it won&rsquo;t send without all four.</div>
+  <div id="tFallback">
+    <div style="font-size:13px;font-weight:700;margin-bottom:8px;">If the text app didn't open, copy this and send it to (808) 796-1566:</div>
+    <div id="tFallbackMsg"></div>
+    <button id="tCopyBtn">Copy text</button><span id="tCopyOk">Copied.</span>
+  </div>
 </div>
 
 </div>
@@ -329,6 +354,31 @@ document.getElementById("sendBtn").addEventListener("click", function(){
 document.getElementById("copyBtn").addEventListener("click", function(){
   var msg = document.getElementById("fallbackMsg").textContent;
   var ok = document.getElementById("copyOk");
+  function done(){ ok.style.display = "inline"; }
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(msg).then(done, function(){ fallbackCopy(msg); done(); });
+  } else { fallbackCopy(msg); done(); }
+});
+document.getElementById("tSendBtn").addEventListener("click", function(){
+  var name = document.getElementById("tName").value.trim();
+  var phone = document.getElementById("tPhone").value.trim();
+  var job = document.getElementById("tJob").value.trim();
+  var words = document.getElementById("tWords").value.trim();
+  var digits = phone.replace(/\D/g, "");
+  if(digits.length > 10) digits = digits.slice(-10);
+  var err = document.getElementById("tErr");
+  if(!name || digits.length !== 10 || !job || words.length < 3){ err.style.display = "block"; return; }
+  err.style.display = "none";
+  var msg = "Testimonial for your booking page \u2014 from " + name + " (" + phone + "). Job you did for me: " + job + ". My words: \"" + words + "\"";
+  document.getElementById("tFallbackMsg").textContent = msg;
+  document.getElementById("tFallback").style.display = "block";
+  document.getElementById("tSentNote").style.display = "block";
+  document.getElementById("tCopyOk").style.display = "none";
+  window.location.href = "sms:" + JACOB_SMS + "?body=" + encodeURIComponent(msg);
+});
+document.getElementById("tCopyBtn").addEventListener("click", function(){
+  var msg = document.getElementById("tFallbackMsg").textContent;
+  var ok = document.getElementById("tCopyOk");
   function done(){ ok.style.display = "inline"; }
   if(navigator.clipboard && navigator.clipboard.writeText){
     navigator.clipboard.writeText(msg).then(done, function(){ fallbackCopy(msg); done(); });
