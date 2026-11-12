@@ -104,12 +104,14 @@
   <p>I do yardwork around Puna &mdash; weeding, weed whacking, trimming, and cleanup. One job a day, mornings starting 8&ndash;9am.</p>
   <div class="rates">$30/hr hand work &middot; $35/hr with my weed wacker &middot; $120 minimum</div>
   <div class="rates-ex">e.g. 4 hrs of hand work = $120</div>
+  <div style="background:#fef3c7;border:1px solid #f59e0b;border-radius:10px;padding:10px 12px;font-size:15px;line-height:1.5;margin-top:12px;"><b>Heads up:</b> my weed wacker is in the repair shop right now, back in about two weeks. Whacking is paused till it&rsquo;s back &mdash; unless you have a wacker of your own I can run. Hand work is booking as usual.</div>
 </div>
 
 <div class="card">
   <div class="svc">
     <div class="svc-row do"><span class="mark">✓</span><span><b>I do:</b> weed whacking &amp; string trimming &middot; hand weeding &amp; pulling &middot; cutback &amp; trimming &middot; general cleanup &middot; small branches &middot; mowing with your mower (I don&rsquo;t have one of my own)</span></div>
     <div class="svc-row dont"><span class="mark">✕</span><span><b>I don&rsquo;t do:</b> big tree limbs &middot; hauling loads away (no truck, but I&rsquo;ll pile everything neatly for you)</span></div>
+    <div class="svc-row dont"><span class="mark">✕</span><span><b>Allergy &mdash; can&rsquo;t handle:</b> mango and golden pothos (devil&rsquo;s ivy). I&rsquo;m allergic to both, so I can&rsquo;t work on those plants.</span></div>
   </div>
 </div>
 
@@ -140,6 +142,14 @@
   <label class="f">What do you need done?
     <textarea id="fWork" rows="3" placeholder="e.g. weed whacking the back lot, trimming along the fence, general cleanup"></textarea>
   </label>
+  <label class="f">Photos of the yard or work (optional)</label>
+  <div id="dz" style="border:2px dashed #9ca3af;border-radius:10px;padding:16px;text-align:center;font-size:15px;line-height:1.5;color:#374151;cursor:pointer;margin:-6px 0 8px;">
+    <b>Tap here or drop photos</b> of the yard or the work you need done
+    <div style="font-size:13px;color:#6b7280;margin-top:4px;">Pick them now. After you tap the button below and your text app opens, attach these same photos to the text before you send it &mdash; a web page can&rsquo;t attach them for you.</div>
+  </div>
+  <input id="fPhotos" type="file" accept="image/*" multiple style="display:none;">
+  <div id="dzThumbs" style="display:flex;flex-wrap:wrap;gap:8px;margin:0 0 4px;"></div>
+  <div id="dzCount" style="display:none;font-size:13px;font-weight:700;color:#15803d;margin:0 0 10px;"></div>
   <label class="f">Preferred start time
     <select id="fTime">
       <option>8:00 AM</option>
@@ -215,10 +225,10 @@ var JACOB_SMS = "+18087961566";
 // day, then push — a removed code stops working. pct = percent off the total.
 var COUPONS = { "CHERISE20": { pct: 20, phone: "8084987557", note: "Nov 2 job cut short when the wacker died; she paid full price anyway" } }; // Cherise Collins, issued Nov 2, 2026. The note rides along in the booking text to Jacob's phone so he sees why the code exists.
 var NOV = {
-  BOOKED: {2:1,3:1,4:1,6:1,10:1,11:1,13:1,9:1}, // 2: Cherise Collins — weed whacking 9am, 16-2163 Ainaloa Dr Pahoa (approved by text Oct 12; text-only, she can't speak). 3: Steve & Katia — weeding and moving rocks 8am, 15-2041 8th Ave HPP (they picked Nov 3 by text Oct 19; Royelen referral). 4: Glen — weed pulling + yard clean up 8am, 18-1252 Volcano Rd, Mountain View (Nicole passed Oct 24; Jacob's confirmation text to Glen sent Oct 24 ~2:37pm; Glen's reply pending). 11 + 13: Leana Hosken — she asked for Wed 11/11 and Fri 11/13 on Oct 31; Jacob confirmed both by text Oct 31 ~10:30am (garden work, scope TBD; he'll retrieve his loppers from her bench). 6: Malele Malele — weed whacking + grass cut along perimeter and gardens, 8am, 17-1048 Volcano Rd (requested by text Nov 1 8:29am; Jacob sent confirmation himself Nov 1 ~10:07am after Muse's send failed; she replied "Mahalo braddah"; Jacob added he'll message day before + ETA day of)
-  UNAVAIL: {1:1,7:1,8:1,14:1,15:1,21:1,22:1,26:1,28:1,29:1}, // weekends off from Nov — Claire's call Oct 10. 26th: Thanksgiving, closed Oct 11. 4: was offered to Nicole Golzer (Oct 17) — she PASSED Oct 24, day went to Glen (BOOKED). 5+6: offered to Laura Oct 22, RELEASED Oct 23 when she booked Tue Oct 27 instead — back in AVAILABLE.
-  PENDING: {12:1}, // Nov 2 (Jacob's call): 5 offered to Asa Ward, 9 asked by Karen Furtado, 12 held for Royelen — spoken for, NOT open, not tappable.
-  AVAILABLE:{5:1,16:1,17:1,18:1,19:1,20:1,23:1,24:1,25:1,27:1,30:1} // November weekdays truly open
+  BOOKED: {2:1,3:1,4:1,7:1,10:1,11:1,13:1,9:1,16:1}, // 2: Cherise Collins — weed whacking 9am, 16-2163 Ainaloa Dr Pahoa (approved by text Oct 12; text-only, she can't speak). 3: Steve & Katia — weeding and moving rocks 8am, 15-2041 8th Ave HPP (they picked Nov 3 by text Oct 19; Royelen referral). 4: Glen — weed pulling + yard clean up 8am, 18-1252 Volcano Rd, Mountain View (Nicole passed Oct 24; Jacob's confirmation text to Glen sent Oct 24 ~2:37pm; Glen's reply pending). 11 + 13: Leana Hosken — she asked for Wed 11/11 and Fri 11/13 on Oct 31; Jacob confirmed both by text Oct 31 ~10:30am (garden work, scope TBD; he'll retrieve his loppers from her bench). 7: Malele Malele — weed trimming, dead-leaf pulling, gardening, 8am, 17-1048 Volcano Rd, her gear (was Fri Nov 6; Jacob rained it out Nov 6 morning, all-day rain; moved to Sat Nov 7 as a one-off weekend exception, she confirmed by text Nov 6 6:57am, weather permitting). 6: back open — was Malele's day, rained out. 10: Glen — round 2, weed pulling + general clean up 8am, 18-1252 Volcano Rd, Mountain View (requested by text Nov 4 ~4:50pm after Susan Schuler cancelled the same day; Jacob said "Book it" Nov 4 ~4:55pm; confirmation text drafted for Jacob to send). 5: was Royelen Lee Boykie, 8am — driveway-to-fence section + pond liner cleanup (moved up from the Nov 12 hold Nov 4 evening), CANCELLED by Jacob Nov 5 morning (Bella rough, needs him home). 16: Royelen Lee Boykie — weeding, cleanup, planting 8am, 15-1020 Kilika Rd, her battery wacker (Jacob's wacker in shop ~2 wks); CONFIRMED by her text Nov 11 ~8:06pm HST — "You are on the calendar." Second day possible, eruption-watch. Nov 12 hold RELEASED same night (she took the 16th instead) — back in AVAILABLE.
+  UNAVAIL: {1:1,8:1,14:1,15:1,21:1,22:1,26:1,28:1,29:1}, // weekends off from Nov — Claire's call Oct 10. 26th: Thanksgiving, closed Oct 11. 4: was offered to Nicole Golzer (Oct 17) — she PASSED Oct 24, day went to Glen (BOOKED). 5+6: offered to Laura Oct 22, RELEASED Oct 23 when she booked Tue Oct 27 instead — back in AVAILABLE.
+  PENDING: {}, // was {12:1} held for Royelen — released Nov 11 evening when she confirmed Mon Nov 16 instead; nothing pending now.
+  AVAILABLE: {5:1,6:1,12:1,17:1,18:1,19:1,20:1,23:1,24:1,25:1,27:1,30:1} // November weekdays truly open. 5: was Royelen's for Thu Nov 5 — Jacob cancelled it Nov 5 morning (Bella rough); 10: was Susan Schuler's ask — she cancelled Nov 4 (neighbors helping); Glen booked it the same evening for a round-2 job. 12: was Royelen's hold, released Nov 11 when she confirmed the 16th.
 };
 var _now = new Date();
 var TODAY_NOV = (_now.getFullYear()===2026 && _now.getMonth()===10) ? _now.getDate() : 0;
@@ -328,6 +338,32 @@ function paintCoupon(){
 document.getElementById("fCoupon").addEventListener("input", paintCoupon);
 document.getElementById("fCoupon").addEventListener("blur", paintCoupon);
 document.getElementById("fPhone").addEventListener("blur", paintCoupon);
+var dzFiles = [];
+var dz = document.getElementById("dz");
+var fPhotos = document.getElementById("fPhotos");
+dz.addEventListener("click", function(){ fPhotos.click(); });
+["dragover", "dragenter"].forEach(function(ev){ dz.addEventListener(ev, function(e){ e.preventDefault(); dz.style.borderColor = "#15803d"; dz.style.background = "#f0fdf4"; }); });
+["dragleave", "drop"].forEach(function(ev){ dz.addEventListener(ev, function(e){ e.preventDefault(); dz.style.borderColor = "#9ca3af"; dz.style.background = ""; }); });
+dz.addEventListener("drop", function(e){ addPhotos(e.dataTransfer.files); });
+fPhotos.addEventListener("change", function(){ addPhotos(fPhotos.files); fPhotos.value = ""; });
+function addPhotos(list){
+  for(var i = 0; i < list.length; i++){ if(list[i].type.indexOf("image/") === 0) dzFiles.push(list[i]); }
+  paintPhotos();
+}
+function paintPhotos(){
+  var wrap = document.getElementById("dzThumbs");
+  wrap.innerHTML = "";
+  dzFiles.forEach(function(f){
+    var img = document.createElement("img");
+    img.src = URL.createObjectURL(f);
+    img.style.cssText = "width:64px;height:64px;object-fit:cover;border-radius:8px;border:1px solid #d1d5db;";
+    img.title = f.name;
+    wrap.appendChild(img);
+  });
+  var c = document.getElementById("dzCount");
+  if(dzFiles.length){ c.style.display = "block"; c.textContent = dzFiles.length + (dzFiles.length === 1 ? " photo" : " photos") + " picked — remember to attach them to the text before you send it."; }
+  else { c.style.display = "none"; }
+}
 document.getElementById("sendBtn").addEventListener("click", function(){
   var name = document.getElementById("fName").value.trim();
   var phone = document.getElementById("fPhone").value.trim();
@@ -345,6 +381,7 @@ document.getElementById("sendBtn").addEventListener("click", function(){
     var cNote = (COUPONS[codeUsed] && COUPONS[codeUsed].note) ? " — " + COUPONS[codeUsed].note : "";
     msg += " Coupon code: " + codeUsed + " (" + pct + "% off" + cNote + ").";
   }
+  if(dzFiles.length){ msg += " I have " + dzFiles.length + (dzFiles.length === 1 ? " photo" : " photos") + " of the yard that I'm attaching to this text."; }
   document.getElementById("fallbackMsg").textContent = msg;
   document.getElementById("fallback").style.display = "block";
   document.getElementById("sentNote").style.display = "block";
